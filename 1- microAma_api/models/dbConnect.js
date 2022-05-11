@@ -3,9 +3,12 @@ const { Sequelize, DataTypes } = require("sequelize")
 
 // ici je peux importer les model de mes table
 const clientModel = require("./client.model")
-// model 2
-// model 3
-// model ...
+const categorieModel = require("./categorie.model")
+const livraisonModel = require("./livraison.model")
+const commandeModel = require("./commande.model")
+const ligneCommandeModel = require("./ligneCommande.model")
+const produitModel = require("./produit.model")
+const panierModel = require("./panier.model")
 
 let dbConnector
 
@@ -25,8 +28,14 @@ module.exports = {
             dbConnector = {
                 Sequelize: Sequelize,
                 sequelize: sequelize,
-                client: clientModel(sequelize,DataTypes)
                 // ici j'importe mes futur modèles
+                client: clientModel(sequelize,DataTypes),
+                categorie: categorieModel(sequelize,DataTypes),
+                livraison: livraisonModel(sequelize,DataTypes),
+                commande: commandeModel(sequelize,DataTypes),
+                ligneCommande: ligneCommandeModel(sequelize,DataTypes),
+                produit: produitModel(sequelize,DataTypes),
+                panier: panierModel(sequelize,DataTypes)
             }
 
             // ici je définis tout les règles concernant les tables (foreign key ect...)
@@ -37,7 +46,7 @@ module.exports = {
 
                 // règle 3
 
-            dbConnector.sequelize.sync()    //sync({force : true}) pour reinitiliser la db
+            dbConnector.sequelize.sync({force : true})    //sync({force : true}) pour reinitiliser la db
         }
     },
 
