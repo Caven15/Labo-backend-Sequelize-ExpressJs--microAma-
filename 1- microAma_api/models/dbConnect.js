@@ -39,12 +39,30 @@ module.exports = {
             }
 
             // ici je définis tout les règles concernant les tables (foreign key ect...)
+            // panier a un client
+                dbConnector.client.hasOne(dbConnector.panier);
+                dbConnector.panier.belongsTo(dbConnector.client);
 
-                // règle 1
+            // commande a un panier
+                dbConnector.panier.hasOne(dbConnector.commande);
+                dbConnector.commande.belongsTo(dbConnector.panier);
 
-                // règle 2
+            // livraison a une commande
+                dbConnector.commande.hasOne(dbConnector.livraison);
+                dbConnector.livraison.belongsTo(dbConnector.commande);
 
-                // règle 3
+            // ligneCommande a un panier
+                dbConnector.panier.hasOne(dbConnector.ligneCommande);
+                dbConnector.ligneCommande.belongsTo(dbConnector.panier);
+
+            // ligneCommande a un produit
+                dbConnector.produit.hasOne(dbConnector.ligneCommande);
+                dbConnector.ligneCommande.belongsTo(dbConnector.produit);
+
+            // produit a une categorie
+                dbConnector.categorie.hasOne(dbConnector.produit);
+                dbConnector.produit.belongsTo(dbConnector.categorie);
+
 
             dbConnector.sequelize.sync({force : true})    //sync({force : true}) pour reinitiliser la db
         }
