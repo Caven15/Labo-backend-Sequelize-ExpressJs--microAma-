@@ -20,6 +20,11 @@ const livraisonModel = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN,
             allowNull: false
         }
+    },
+    {
+        // permet de ne pas generer les colonnes créer par sequelize
+        createdAt: false,
+        updatedAt: false,
     })
 
     return livraison

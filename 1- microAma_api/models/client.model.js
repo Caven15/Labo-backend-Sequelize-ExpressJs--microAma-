@@ -37,6 +37,11 @@ const clientModel = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         }
+    },
+    {
+        // permet de ne pas generer les colonnes créer par sequelize
+        createdAt: false,
+        updatedAt: false,
     })
 
     return client

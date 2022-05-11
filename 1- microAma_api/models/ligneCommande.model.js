@@ -8,6 +8,11 @@ const ligneCommandeModel = (sequelize, DataTypes) => {
             type: DataTypes.REAL,
             allowNull: false
         }
+    },
+    {
+        // permet de ne pas generer les colonnes créer par sequelize
+        createdAt: false,
+        updatedAt: false,
     })
 
     return ligneCommande

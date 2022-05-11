@@ -1,6 +1,6 @@
-const categorieModel = (sequelize, DataTypes) => {
-    const categorie = sequelize.define("categorie", {
-        categorie: {
+const roleModel = (sequelize, DataTypes) => {
+    const role = sequelize.define("role", {
+        role: {
             type: DataTypes.STRING,
             allowNull: false
         }
@@ -11,7 +11,7 @@ const categorieModel = (sequelize, DataTypes) => {
         updatedAt: false,
     })
 
-    return categorie
+    return role
 }
 
-module.exports = categorieModel
+module.exports = roleModel

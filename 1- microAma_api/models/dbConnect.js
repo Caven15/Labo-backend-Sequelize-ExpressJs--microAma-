@@ -9,6 +9,7 @@ const commandeModel = require("./commande.model")
 const ligneCommandeModel = require("./ligneCommande.model")
 const produitModel = require("./produit.model")
 const panierModel = require("./panier.model")
+const roleModel = require("./role.model")
 
 let dbConnector
 
@@ -35,10 +36,16 @@ module.exports = {
                 commande: commandeModel(sequelize,DataTypes),
                 ligneCommande: ligneCommandeModel(sequelize,DataTypes),
                 produit: produitModel(sequelize,DataTypes),
-                panier: panierModel(sequelize,DataTypes)
+                panier: panierModel(sequelize,DataTypes),
+                role: roleModel(sequelize,DataTypes)
+
             }
 
             // ici je définis tout les règles concernant les tables (foreign key ect...)
+            // client a un role
+                dbConnector.role.hasOne(dbConnector.client);
+                dbConnector.client.belongsTo(dbConnector.role);
+
             // panier a un client
                 dbConnector.client.hasOne(dbConnector.panier);
                 dbConnector.panier.belongsTo(dbConnector.client);
