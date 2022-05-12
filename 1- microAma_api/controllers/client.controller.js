@@ -1,4 +1,5 @@
 const dbConnector = require("../models/dbConnect").get()
+const bcrypt = require("bcrypt")
 
 // récupère tout les clients
 exports.getAllClients = async (req, res, next) => {
@@ -36,16 +37,14 @@ exports.updateClient = async (req, res, next) => {
         const client = await dbConnector.client.findByPk(req.params.id)
         if (client) {
             if(req.body.password) {
-                return res.status(403).send({
-                    message : "impossible de modifier le password ici..."
-                })
+                return res.status(403).send({message : "impossible de modifier le password ici..."})
             } 
             client.update(req.body)
-            res.write(JSON.stringify({Message :  `User ${req.body.nom} mis a jour avec succès !` }))
+            res.write(JSON.stringify({Message :  `client nr : ${req.params.idm} mis a jour avec succès !` }))
             res.end()
         }
         else{
-            res.write(JSON.stringify({Message :  `User ${req.body.nom} n'as pas été trouvé...` }))
+            res.write(JSON.stringify({Message :  `client nr : ${req.params.id} n'as pas été trouvé...` }))
             res.end()
         }
     } catch (error) {
@@ -54,14 +53,47 @@ exports.updateClient = async (req, res, next) => {
 }
 
 // supression d'un client
-// exports.deleteClient = async (req, res, next) => {
-//     try {
+exports.deleteClient = async (req, res, next) => {
+    try {
+        const client = await dbConnector.client.destroy({where : {id : req.params.id}})
+        if (client) {
+            res.write(JSON.stringify({Message :  `client nr : ${req.params.id} a été suprimer avec succès !` }))
+            res.end()
+        }else{
+            res.write(JSON.stringify({Message :  `client nr : ${req.params.id} n'existe pas` }))
+            res.end()
+        }
+    } catch (error) {
         
-//     } catch (error) {
-        
-//     }
-// }
+    }
+}
 
 // modification du mot de passe d'un client
+exports.updatePassword = async (req, res, next) => {
+    try {
+        const client = await dbConnector.client.findOne({where : {id : req.params.id}})
+        if (client) {
+            const password = bcrypt.compareSync(req.body.oldPassword.trim(), client.password)
+            if (!password) {
+                res.status(401).send({message: "mot de passe invalide !"})
+            }
+            if (req.body.newPassword != req.body.confirmNewPassword) {
+                res.status(401).send({message: `le mot de passe ne correspond pas !`})
+            }
+            if (req.body.newPassword == "") {
+                res.status(401).send({message: `le mot de passe ne peut être vide !`})
+            } 
+            const newPassword = bcrypt.hashSync(req.body.newPassword.trim(), 10)
+            await client.update({password : newPassword})
+            res.status(201).send({message: "mot de passe changé avec succès !"})
+        }
+        else {
+            res.write(JSON.stringify({Message :  `client nr : ${req.params.id} n'existe pas !` }))
+            res.end()
+        }
+    } catch (error) {
+        res.json(error)
+    }
+}
 
 
