@@ -34,7 +34,7 @@ exports.register = async (req, res, next) => {
 }
 
 // login d'un client
-exports.login = async (req,res, next) => {
+exports.login = async (req, res, next) => {
     const client = await dbConnector.client.findOne({where: {email: req.body.email}})
     if (client) {
         const password = bcrypt.compareSync(req.body.password.trim(),client.password)

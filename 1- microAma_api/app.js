@@ -24,6 +24,9 @@ app.use("/role", roleRouter)
 const authRouter = require("./routers/auth.router")
 app.use("/auth", authRouter)
 
+const clientRouter = require("./routers/client.router")
+app.use("/client", clientRouter)
+
 
 app.all("*", (req, res, next) => {
     console.log("attention route non trouvée")
