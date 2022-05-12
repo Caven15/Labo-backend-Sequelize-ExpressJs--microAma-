@@ -21,6 +21,9 @@ app.use(cors())
 const roleRouter = require("./routers/role.router")
 app.use("/role", roleRouter)
 
+const authRouter = require("./routers/auth.router")
+app.use("/auth", authRouter)
+
 
 app.all("*", (req, res, next) => {
     console.log("attention route non trouvée")
