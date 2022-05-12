@@ -1,5 +1,6 @@
 const dbConnector = require("../models/dbConnect").get()
 const bcrypt = require('bcrypt')
+const jwt = require("jsonwebtoken");
 // enregistrement d'un nouveau client
 exports.register = async (req, res, next) => {
     try {
@@ -29,5 +30,36 @@ exports.register = async (req, res, next) => {
         }
     } catch (error) {
         console.log(error)
+    }
+}
+
+// login d'un client
+exports.login = async (req,res, next) => {
+    const client = await dbConnector.client.findOne({where: {email: req.body.email}})
+    if (client) {
+        const password = bcrypt.compareSync(req.body.password.trim(),client.password)
+        if (!password) {
+            return res.status(401).send({
+                accessToken: null,
+                message: "mot de passe incorecte"
+            })
+        }
+        const dataToken = {
+            id : client.id,
+            nom : client.nom,
+            prenom : client.prenom,
+            dateNaissance : client.dateNaissance,
+            email : client.email,
+            roleId : client.roleId
+        }
+        var token = jwt.sign(dataToken, process.env.TOKEN_SECRET, {expiresIn: '1800s'})
+        res.status(200).send({
+            accessToken : token
+        })
+    }
+    else{
+        res.status(401).send({
+            message: "le client n'existe pas..."
+        })
     }
 }
