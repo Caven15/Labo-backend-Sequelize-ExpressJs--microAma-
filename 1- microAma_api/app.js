@@ -18,6 +18,8 @@ app.use(function (req, res, next) {
 app.use(cors())
 
 // ici j'importe tout mes routeur pour la redirection...
+const roleRouter = require("./routers/role.router")
+app.use("/role", roleRouter)
 
 
 app.all("*", (req, res, next) => {

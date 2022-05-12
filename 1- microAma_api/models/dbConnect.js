@@ -71,7 +71,7 @@ module.exports = {
                 dbConnector.produit.belongsTo(dbConnector.categorie);
 
 
-            dbConnector.sequelize.sync({force : true})    //sync({force : true}) pour reinitiliser la db
+            dbConnector.sequelize.sync()    //sync({force : true}) pour reinitiliser la db
         }
     },
 
