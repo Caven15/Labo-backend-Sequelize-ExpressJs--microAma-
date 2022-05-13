@@ -9,6 +9,7 @@ exports.getAllClients = async (req, res, next) => {
     } catch (error) {
         res.json(error)
     }
+router.post("/", categorieController.addCategorie)
 }
 
 // récuperer un client par son role
@@ -40,7 +41,7 @@ exports.updateClient = async (req, res, next) => {
                 return res.status(403).send({message : "impossible de modifier le password ici..."})
             } 
             client.update(req.body)
-            res.write(JSON.stringify({Message :  `client nr : ${req.params.idm} mis a jour avec succès !` }))
+            res.write(JSON.stringify({Message :  `client nr : ${req.params.id} mis a jour avec succès !` }))
             res.end()
         }
         else{
@@ -64,7 +65,7 @@ exports.deleteClient = async (req, res, next) => {
             res.end()
         }
     } catch (error) {
-        
+        res.json(error)
     }
 }
 

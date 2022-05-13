@@ -3,5 +3,6 @@ const router = express.Router()
 const roleController = require("../controllers/role.controller")
 
 router.post("/", roleController.addRole)
+router.delete("/:id", roleController.deleteRole)
 
 module.exports = router

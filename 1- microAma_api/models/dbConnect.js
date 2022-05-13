@@ -8,7 +8,6 @@ const livraisonModel = require("./livraison.model")
 const commandeModel = require("./commande.model")
 const ligneCommandeModel = require("./ligneCommande.model")
 const produitModel = require("./produit.model")
-const panierModel = require("./panier.model")
 const roleModel = require("./role.model")
 
 let dbConnector
@@ -36,7 +35,6 @@ module.exports = {
                 commande: commandeModel(sequelize,DataTypes),
                 ligneCommande: ligneCommandeModel(sequelize,DataTypes),
                 produit: produitModel(sequelize,DataTypes),
-                panier: panierModel(sequelize,DataTypes),
                 role: roleModel(sequelize,DataTypes)
 
             }
@@ -47,20 +45,16 @@ module.exports = {
                 dbConnector.client.belongsTo(dbConnector.role);
 
             // panier a un client
-                dbConnector.client.hasOne(dbConnector.panier);
-                dbConnector.panier.belongsTo(dbConnector.client);
-
-            // commande a un panier
-                dbConnector.panier.hasOne(dbConnector.commande);
-                dbConnector.commande.belongsTo(dbConnector.panier);
+                dbConnector.client.hasOne(dbConnector.commande);
+                dbConnector.commande.belongsTo(dbConnector.client);
 
             // livraison a une commande
                 dbConnector.commande.hasOne(dbConnector.livraison);
                 dbConnector.livraison.belongsTo(dbConnector.commande);
 
             // ligneCommande a un panier
-                dbConnector.panier.hasOne(dbConnector.ligneCommande);
-                dbConnector.ligneCommande.belongsTo(dbConnector.panier);
+                dbConnector.commande.hasOne(dbConnector.ligneCommande);
+                dbConnector.ligneCommande.belongsTo(dbConnector.commande);
 
             // ligneCommande a un produit
                 dbConnector.produit.hasOne(dbConnector.ligneCommande);

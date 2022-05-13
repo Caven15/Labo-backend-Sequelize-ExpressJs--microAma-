@@ -27,6 +27,9 @@ app.use("/auth", authRouter)
 const clientRouter = require("./routers/client.router")
 app.use("/client", clientRouter)
 
+const categorieRouter = require("./routers/categorie.router")
+app.use("/categorie", categorieRouter)
+
 
 app.all("*", (req, res, next) => {
     console.log("attention route non trouvée")
